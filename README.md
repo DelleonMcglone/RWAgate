@@ -44,8 +44,8 @@ script/
 | cbBCT | `0xcbB7C0006F23900c38EB856149F799620fcb8A4a` | [Verified](https://sepolia.basescan.org/address/0xcbB7C0006F23900c38EB856149F799620fcb8A4a#code) |
 | PoolSwapTest | `0x8b5bcc363dde2614281ad875bad385e0a785d3b9` | [Verified](https://sepolia.basescan.org/address/0x8b5bcc363dde2614281ad875bad385e0a785d3b9#code) |
 | PoolModifyLiquidityTest | `0x37429cd17cb1454c34e7f50b09725202fd533039` | [Verified](https://sepolia.basescan.org/address/0x37429cd17cb1454c34e7f50b09725202fd533039#code) |
-| **RWAGate** | _TBD after deployment_ | _TBD_ |
-| **ComplianceRegistry** | _TBD after deployment_ | _TBD_ |
+| **RWAGate** | `0xbba7Cf860B47E16b9b83d8185878Ec0FAD0d4a80` | [Verified](https://sepolia.basescan.org/address/0xbba7Cf860B47E16b9b83d8185878Ec0FAD0d4a80#code) |
+| **ComplianceRegistry** | `0x11B261AE5AF867baA69506dfE6d62eeE9DB5D796` | [Verified](https://sepolia.basescan.org/address/0x11B261AE5AF867baA69506dfE6d62eeE9DB5D796#code) |
 
 ## API Reference
 

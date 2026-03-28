@@ -40,15 +40,13 @@ contract DeployRWAGate is Script {
             abi.encode(address(POOL_MANAGER), address(registry))
         );
 
-        bytes32 salt = _mineSalt(deployer, creationCode, HOOK_FLAGS);
+        // Foundry routes new Contract{salt:}() through the universal CREATE2 factory
+        address create2Factory = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
+        bytes32 salt = _mineSalt(create2Factory, creationCode, HOOK_FLAGS);
         console.log("Mined salt for hook flags");
 
-        // 3. Deploy RWAGate via CREATE2
-        RWAGate hook;
-        assembly {
-            hook := create2(0, add(creationCode, 0x20), mload(creationCode), salt)
-        }
-        require(address(hook) != address(0), "CREATE2 deployment failed");
+        // 3. Deploy RWAGate via CREATE2 — new syntax uses EOA as deployer (matches salt mining)
+        RWAGate hook = new RWAGate{salt: salt}(POOL_MANAGER, registry);
         require(uint160(address(hook)) & Hooks.ALL_HOOK_MASK == HOOK_FLAGS, "Hook address flag mismatch");
         console.log("RWAGate deployed at:", address(hook));
 
