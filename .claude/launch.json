@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "anvil (local Base Sepolia fork)",
+      "runtimeExecutable": "anvil",
+      "runtimeArgs": ["--fork-url", "https://sepolia.base.org", "--chain-id", "84532", "--port", "8545"],
+      "port": 8545
+    }
+  ]
+}
