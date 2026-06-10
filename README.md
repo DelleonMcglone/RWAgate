@@ -2,8 +2,8 @@
 
 Uniswap v4 compliance hook that enforces on-chain whitelist-based access control for pools trading regulated Real World Asset tokens. Pure gatekeeper — no pricing or fee modifications.
 
-**Chain:** Base Sepolia (84532)
-**Demo Pools:** USDC/EURC (MiCA-regulated FX pair), USDC/cbBCT (tokenized carbon credit)
+**Chain:** Arc Testnet (5042002) · also deployed on Base Sepolia (84532)
+**Demo Pool:** USDC/EURC (MiCA-regulated FX pair)
 
 ## Architecture
 
@@ -33,6 +33,27 @@ script/
    - Sender is whitelisted (reverts `NotWhitelisted(address)`)
    - Whitelist entry not expired (reverts `WhitelistExpired(address, uint256)`)
 4. On success, the hook returns zero delta and zero fee override — no pricing modification
+
+## Arc Testnet Contracts
+
+Chain ID `5042002` · RPC `https://rpc.testnet.arc.network` · Explorer https://testnet.arcscan.app
+
+Arc has no canonical Uniswap v4 deployment, so this deployment ships its own `PoolManager` and
+test routers alongside the hook. On Arc, USDC is the native gas token; `0x3600…0000` is its ERC-20
+interface. Verified end-to-end: a 0.1 USDC → ~0.0997 EURC swap (0.30% fee) executes through the
+RWAGate-gated pool.
+
+| Contract | Address | Arcscan |
+|----------|---------|---------|
+| **RWAGate (HOOK)** | `0xda483a6374AEeB3ffA6D8a2772D6c2e64d314a80` | [View](https://testnet.arcscan.app/address/0xda483a6374AEeB3ffA6D8a2772D6c2e64d314a80) |
+| **ComplianceRegistry** | `0x2978eA98Cc3c5c480d4C9D073DF8599BA761556D` | [View](https://testnet.arcscan.app/address/0x2978eA98Cc3c5c480d4C9D073DF8599BA761556D) |
+| PoolManager (v4) | `0xA29B7D158f2b2113Bd60eeD765866f794096D4Dc` | [View](https://testnet.arcscan.app/address/0xA29B7D158f2b2113Bd60eeD765866f794096D4Dc) |
+| PoolSwapTest | `0x97dA0bEf8FCa63D9B597AF54b76B25d4f89FbD14` | [View](https://testnet.arcscan.app/address/0x97dA0bEf8FCa63D9B597AF54b76B25d4f89FbD14) |
+| PoolModifyLiquidityTest | `0xa9A1c3BC2acB424b0e688B8a19E0a4Af76bA43e5` | [View](https://testnet.arcscan.app/address/0xa9A1c3BC2acB424b0e688B8a19E0a4Af76bA43e5) |
+| USDC | `0x3600000000000000000000000000000000000000` | [View](https://testnet.arcscan.app/address/0x3600000000000000000000000000000000000000) |
+| EURC | `0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a` | [View](https://testnet.arcscan.app/address/0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a) |
+
+Pool: `currency0 = USDC`, `currency1 = EURC`, `fee = 3000`, `tickSpacing = 60`, `hooks = RWAGate`.
 
 ## Base Sepolia Contracts
 
@@ -120,7 +141,34 @@ forge test -vvv
 forge coverage
 ```
 
-### Deploy
+### Deploy to Arc Testnet
+
+Arc uses USDC as its native gas token — fund the deployer with testnet USDC from
+https://faucet.circle.com first. Use an encrypted keystore rather than a plaintext key:
+
+```shell
+# One-time: import the deployer key into an encrypted keystore
+cast wallet import rwagate-deployer --interactive
+
+export DEPLOYER=<deployer_address>
+
+# Deploys PoolManager + ComplianceRegistry + RWAGate (CREATE2) + test routers,
+# whitelists the routers, and initializes the USDC/EURC pool.
+forge script script/DeployRWAGateArc.s.sol:DeployRWAGateArc \
+  --rpc-url https://rpc.testnet.arc.network \
+  --account rwagate-deployer --sender $DEPLOYER --broadcast --slow
+```
+
+Seed liquidity and run a proof swap (driven with `cast send` because Foundry's local
+fork cannot execute Arc's native-USDC blocklist precompile — see the script header):
+
+```shell
+export POOL_MANAGER=<pool_manager>  HOOK=<hook>
+export SWAP_ROUTER=<swap_router>    LP_ROUTER=<lp_router>
+# Approve USDC/EURC to the routers, then call modifyLiquidity / swap via cast send.
+```
+
+### Deploy to Base Sepolia
 
 ```shell
 # Set environment variables

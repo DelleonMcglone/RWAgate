@@ -5,6 +5,10 @@ libs = ["lib"]
 solc_version = "0.8.26"
 evm_version = "cancun"
 ffi = true
+# Match v4-core so the large PoolManager compiles under the 24576-byte EIP-170 limit.
+optimizer = true
+optimizer_runs = 44444444
+via_ir = true
 
 [fmt]
 line_length = 120
