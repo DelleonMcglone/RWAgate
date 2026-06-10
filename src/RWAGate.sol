@@ -98,19 +98,25 @@ contract RWAGate is IHooks {
         revert HookNotImplemented();
     }
 
-    function afterAddLiquidity(address, PoolKey calldata, IPoolManager.ModifyLiquidityParams calldata, BalanceDelta, BalanceDelta, bytes calldata)
-        external
-        pure
-        returns (bytes4, BalanceDelta)
-    {
+    function afterAddLiquidity(
+        address,
+        PoolKey calldata,
+        IPoolManager.ModifyLiquidityParams calldata,
+        BalanceDelta,
+        BalanceDelta,
+        bytes calldata
+    ) external pure returns (bytes4, BalanceDelta) {
         revert HookNotImplemented();
     }
 
-    function afterRemoveLiquidity(address, PoolKey calldata, IPoolManager.ModifyLiquidityParams calldata, BalanceDelta, BalanceDelta, bytes calldata)
-        external
-        pure
-        returns (bytes4, BalanceDelta)
-    {
+    function afterRemoveLiquidity(
+        address,
+        PoolKey calldata,
+        IPoolManager.ModifyLiquidityParams calldata,
+        BalanceDelta,
+        BalanceDelta,
+        bytes calldata
+    ) external pure returns (bytes4, BalanceDelta) {
         revert HookNotImplemented();
     }
 

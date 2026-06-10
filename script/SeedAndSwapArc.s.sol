@@ -48,10 +48,7 @@ contract SeedAndSwapArc is Script {
         // Add liquidity in the ±120 tick band around 1:1.
         // L = 1e9 over this band needs ~6 base units * 1e6 ≈ ~6 USDC and ~6 EURC (6-decimal tokens).
         IPoolManager.ModifyLiquidityParams memory lp = IPoolManager.ModifyLiquidityParams({
-            tickLower: -120,
-            tickUpper: 120,
-            liquidityDelta: 1e9,
-            salt: bytes32(0)
+            tickLower: -120, tickUpper: 120, liquidityDelta: 1e9, salt: bytes32(0)
         });
         lpRouter.modifyLiquidity(key, lp, "");
         console.log("Liquidity added (USDC/EURC)");
