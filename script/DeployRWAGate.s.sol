@@ -35,10 +35,8 @@ contract DeployRWAGate is Script {
         console.log("ComplianceRegistry deployed at:", address(registry));
 
         // 2. Mine CREATE2 salt for hook address with correct flags
-        bytes memory creationCode = abi.encodePacked(
-            type(RWAGate).creationCode,
-            abi.encode(address(POOL_MANAGER), address(registry))
-        );
+        bytes memory creationCode =
+            abi.encodePacked(type(RWAGate).creationCode, abi.encode(address(POOL_MANAGER), address(registry)));
 
         // Foundry routes new Contract{salt:}() through the universal CREATE2 factory
         address create2Factory = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
@@ -75,17 +73,12 @@ contract DeployRWAGate is Script {
     }
 
     /// @dev Mine a CREATE2 salt that produces an address whose lower 14 bits match the desired flags.
-    function _mineSalt(address deployer, bytes memory creationCode, uint160 flags)
-        internal
-        pure
-        returns (bytes32)
-    {
+    function _mineSalt(address deployer, bytes memory creationCode, uint160 flags) internal pure returns (bytes32) {
         bytes32 initCodeHash = keccak256(creationCode);
         for (uint256 i; i < 100_000; ++i) {
             bytes32 salt = bytes32(i);
-            address predicted = address(
-                uint160(uint256(keccak256(abi.encodePacked(bytes1(0xff), deployer, salt, initCodeHash))))
-            );
+            address predicted =
+                address(uint160(uint256(keccak256(abi.encodePacked(bytes1(0xff), deployer, salt, initCodeHash)))));
             if (uint160(predicted) & Hooks.ALL_HOOK_MASK == flags) {
                 return salt;
             }
