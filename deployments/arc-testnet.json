@@ -1,0 +1,25 @@
+{
+  "network": "Arc Testnet",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.network",
+  "explorer": "https://testnet.arcscan.app",
+  "contracts": {
+    "RWAGate": "0xda483a6374AEeB3ffA6D8a2772D6c2e64d314a80",
+    "ComplianceRegistry": "0x2978eA98Cc3c5c480d4C9D073DF8599BA761556D",
+    "PoolManager": "0xA29B7D158f2b2113Bd60eeD765866f794096D4Dc",
+    "PoolSwapTest": "0x97dA0bEf8FCa63D9B597AF54b76B25d4f89FbD14",
+    "PoolModifyLiquidityTest": "0xa9A1c3BC2acB424b0e688B8a19E0a4Af76bA43e5"
+  },
+  "tokens": {
+    "USDC": "0x3600000000000000000000000000000000000000",
+    "EURC": "0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a"
+  },
+  "pool": {
+    "currency0": "0x3600000000000000000000000000000000000000",
+    "currency1": "0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "hooks": "0xda483a6374AEeB3ffA6D8a2772D6c2e64d314a80"
+  },
+  "operator": "0xceeD79dBB39bA3C6Cddb57eb6343BE25FfD6dd56"
+}
